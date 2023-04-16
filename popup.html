@@ -1,0 +1,36 @@
+<!-- Copyright 2017 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file. -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ZS Test Cycle Filter</title>
+    <style>
+      body {
+        text-align: center;
+      }
+
+      #hydrateImage {
+        width: 100px;
+        margin: 5px;
+      }
+
+      button {
+        margin: 5px;
+        outline: none;
+      }
+
+      
+    </style>
+    <!--
+      - JavaScript and HTML must be in separate files
+     -->
+  </head>
+  <body>
+    <img src="./stay_hydrated.png" id="hydrateImage" />
+    <input type='text' id="filter-text">
+    <button id="set-filter">Set Filter</button>
+    <button id="clear-filter">Clear Filter</button>
+    <script src="popup.js"></script>
+  </body>
+</html>

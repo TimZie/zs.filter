@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "ZS TestCycle Selector",
+    "description": "Filter out Zephyr Scale test cases in test cycles based on sub path",
+    "version": "1.0",
+    "icons": {
+        "16": "images/icon-16.png",
+        "32": "images/icon-32.png",
+        "48": "images/icon-48.png",
+        "128": "images/icon-128.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+      "default_title": "ZS Test Cycle Filter",
+      "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab", "scripting", "storage", "nativeMessaging"],
+    "commands": {
+        "_execute_action": {
+          "suggested_key": {
+            "default": "Ctrl+B",
+            "mac": "Command+B"
+          }
+        }
+      }
+  }
