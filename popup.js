@@ -11,7 +11,6 @@ function setFilter() {
   chrome.storage.local.set({ filtertext: filterText }).then(() => {
     console.log("Value is set to " + filterText);
   });
-  chrome.action.setBadgeText({ text: 'ON' });
 
   // send message to background task
   chrome.runtime.sendMessage({'filtertext': filterText}, function(response) {});
@@ -22,7 +21,7 @@ function setFilter() {
 function clearFilter() {
   document.getElementById('filter-text').value = '';
   chrome.storage.local.clear();
-  chrome.action.setBadgeText({ text: '' });
+  chrome.runtime.sendMessage({'filtertext': ''}, function(response) {});
 //  window.close();
 }
 

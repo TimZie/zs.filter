@@ -4,55 +4,45 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-const extensions = 'https://developer.chrome.com/docs/extensions'
-const webstore = 'https://developer.chrome.com/docs/webstore'
+const testCycleView = 'https://issues.cambio.se/secure/Tests.jspa#/testPlayer/'
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("message received "+message);
+  console.log("message received " + message);
+  filter(message);
   sendResponse("");
 });
 
+let lastCSSStack = [];
 
-//chrome.storage.onChanged.addListener((changes, area) => {
-  // for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-  //   console.log(
-  //     `Storage key "${key}" in namespace "${area}" changed.`,
-  //     `Old value was "${oldValue}", new value is "${newValue}".`
-  //   );
-  // }
-//   if (area === 'local') {
-//     if (changes.filtertext?.newValue) {
-//       console.log("active");
-//     } else {
-//       console.log("inaactive")
-//     }
-//   }
-// })
+async function filter(message) {
+  if (message) {
+    tab = await getCurrentTab();
+    if (tab?.url.startsWith(testCycleView)) {
+      console.log("Im in, message " + message.filtertext);
 
-// chrome.action.onClicked.addListener(async (tab) => {
-//   if (tab.url.startsWith(extensions) || tab.url.startsWith(webstore)) {
-//     // Retrieve the action badge to check if the extension is 'ON' or 'OFF'
-//     const prevState = await chrome.action.getBadgeText({ tabId: tab.id });
-//     // Next state will always be the opposite
-//     const nextState = prevState === 'ON' ? 'OFF' : 'ON'
+      if (message.filtertext) {
+        css = `#ktm-test-player-scope > div.ktm-test-player-scope-single-view.ng-scope > div.ktm-groups-list.ng-scope > ol > li:has(div > span.ktm-name.ng-binding:not([title*="${message.filtertext}"])) {display: none;}`;
 
-//     // Set the action badge to the next state
-//     await chrome.action.setBadgeText({
-//       tabId: tab.id,
-//       text: nextState,
-//     });
+      // Insert the CSS 
+        await chrome.scripting.insertCSS({
+          css: css,
+          target: { tabId: tab.id },
+        });
+        lastCSSStack.push(css);
+      } else {
+        // Remove the CSS
+        await chrome.scripting.removeCSS({
+          css: lastCSSStack.pop(),
+          target: { tabId: tab.id },
+        });
+      }
+    }
+  }
+}
 
-//     if (nextState === "ON") {
-//         // Insert the CSS file when the user turns the extension on
-//         await chrome.scripting.insertCSS({
-//           files: ["focus-mode.css"],
-//           target: { tabId: tab.id },
-//         });
-//       } else if (nextState === "OFF") {
-//         // Remove the CSS file when the user turns the extension off
-//         await chrome.scripting.removeCSS({
-//           files: ["focus-mode.css"],
-//           target: { tabId: tab.id },
-//         });
-//       }
-// }});
+async function getCurrentTab() {
+  let queryOptions = { active: true, lastFocusedWindow: true };
+  // `tab` will either be a `tabs.Tab` instance or `undefined`.
+  let [tab] = await chrome.tabs.query(queryOptions);
+  return tab;
+}
