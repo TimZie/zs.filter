@@ -8,6 +8,12 @@ async function getCurrentTab() {
 
 function setFilter() {
   const filterText = document.getElementById('filter-text').value;
+
+  if (!filterText)
+  {
+    return;
+  }
+
   chrome.storage.local.set({ filtertext: filterText }).then(() => {
     console.log("Value is set to " + filterText);
   });
