@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "ZS TestCycle Selector",
+    "name": "Zephyr Zapper",
     "description": "Filter out Zephyr Scale test cases in test cycles based on sub path",
     "version": "1.0",
     "icons": {
@@ -13,7 +13,7 @@
         "service_worker": "background.js"
     },
     "action": {
-      "default_title": "ZS Test Cycle Filter",
+      "default_title": "Zephyr Zapper",
       "default_popup": "popup.html"
     },
     "permissions": ["tabs", "scripting", "storage", "nativeMessaging"],
